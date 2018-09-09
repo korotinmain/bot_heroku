@@ -18,13 +18,7 @@ require("./models/date.model");
 console.log("Bot has been started ...");
 
 const bot = new TelegramBot(TOKEN, {
-    polling: {
-        interval : 300,
-        autoStart: true,
-        params   : {
-            timeout: 10
-        }
-    }
+    polling: true
 });
 
 // const check_time = setInterval(function () {
