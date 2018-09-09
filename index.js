@@ -2,8 +2,8 @@ const TelegramBot = require("node-telegram-bot-api");
 const con = require('./database/connection');
 const con_controller = require('./database/con_handler')();
 const formatDate = require('./modules/formatdate');
-const TOKEN = "404568801:AAGbYs522aLjZ1IqH7nIFCa-gbCLaJSQUnI";
-const selectUserFromGroup = require('./modules/select_user')
+const TOKEN = "479215318:AAENNSIFasERmQy5i4rve48latNkAPejOwo";
+const selectUserFromGroup = require('./modules/select_user');
 const http = require('http');
 console.log("Bot has been started ...");
 con.connect(con_controller);
