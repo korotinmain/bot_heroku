@@ -1,5 +1,5 @@
 const TelegramBot = require("node-telegram-bot-api");
-const TOKEN = "API_TOKEN";
+const TOKEN = "479215318:AAENNSIFasERmQy5i4rve48latNkAPejOwo";
 const http = require('http');
 const debug = require("./modules/helpers");
 const mongoose = require("mongoose");
