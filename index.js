@@ -10,17 +10,12 @@ con.connect(con_controller);
 
 
 const bot = new TelegramBot(TOKEN, {
-    polling: {
-        interval: 300,
-        autoStart: true,
-        params: {
-            timeout: 10
-        }
+        polling: true
     }
-});
+);
 
 bot.onText(/\/gusi/, query => {
-    con.query(selectUserFromGroup(query.from.id, query.chat.id), function(err, get_person_id) {
+    con.query(selectUserFromGroup(query.from.id, query.chat.id), function (err, get_person_id) {
         if (err) {
             console.log(err)
         }
@@ -45,7 +40,7 @@ bot.onText(/\/gusi/, query => {
    where gr.telegramId = ${query.chat.id} and g.gooseDate = current_date()
    
    
-   `, function(err, get_date) {
+   `, function (err, get_date) {
 
 
                 if (get_date[0] != null) {
@@ -64,7 +59,7 @@ from
         user as u on uig.userID = u.id
 where g.telegramId = ${query.chat.id}
     
-    `, function(err, result) {
+    `, function (err, result) {
                         for (item of result) {
                             gusiArray.push(item.name);
                         }
@@ -86,12 +81,12 @@ where g.telegramId = ${query.chat.id}
         where u.name = '${currentGoose}' and gr.telegramID = ${query.chat.id}  and u.telegramID = ${query.from.id});
            
         
-        `, function(err, res) {
+        `, function (err, res) {
                             con.query(`
             update gusi
             set countGoose = countGoose+1, gooseDate = current_date()
             where id = @id
-            `, function(err, resul) {
+            `, function (err, resul) {
                                 if (err) {
                                     console.log(err);
                                 } else {
@@ -100,7 +95,6 @@ where g.telegramId = ${query.chat.id}
                             })
 
                         })
-                        
 
 
                     });
@@ -122,40 +116,40 @@ bot.onText(/\/reg/, query => {
     const wasCreated = `Вы уже были зарегистрированы в этой игре.`;
     const willBeCreate = `Я тебя запомнил, Гусяра - ${query.from.first_name}`;
 
-    con.query(`select * from groups where telegramId = ${query.chat.id} `, function(err, result) {
+    con.query(`select * from groups where telegramId = ${query.chat.id} `, function (err, result) {
         if (result[0]) {
             console.log(result[0]);
         } else {
-            con.query(`insert into groups (telegramId) values('${query.chat.id}')`, function(err, result) {
+            con.query(`insert into groups (telegramId) values('${query.chat.id}')`, function (err, result) {
                 if (err) {
                     console.log(result);
                 }
             })
         }
     })
-    con.query(`select * from user where telegramId = ${query.from.id}`, function(err, result) {
+    con.query(`select * from user where telegramId = ${query.from.id}`, function (err, result) {
         if (result[0]) {
             console.log(result[0]);
         } else {
-            con.query(`insert into user (telegramId, name) values('${query.from.id}','${query.from.first_name}')`, function(err, result) {
+            con.query(`insert into user (telegramId, name) values('${query.from.id}','${query.from.first_name}')`, function (err, result) {
                 if (err) {
                     console.log(result);
                 }
             })
         }
     })
-    con.query(selectUserFromGroup(query.from.id, query.chat.id), function(err, res) {
+    con.query(selectUserFromGroup(query.from.id, query.chat.id), function (err, res) {
         const sql = `
         insert into userInGroup(userID, groupID) values ((select id from user where telegramId = ${query.from.id}), 
         (select id from groups where telegramId = ${query.chat.id}))
         `;
         if (!res[0]) {
-            con.query(sql, function(err, result) {
+            con.query(sql, function (err, result) {
                 if (err) {
                     console.log(err);
                 }
             });
-            con.query(`insert into gusi(telegramId, countGoose) values ('${query.from.id}','0')`, function(err, result) {
+            con.query(`insert into gusi(telegramId, countGoose) values ('${query.from.id}','0')`, function (err, result) {
                 if (err) {
                     console.log(err);
                 }
@@ -192,7 +186,7 @@ bot.onText(/\/me/, query => {
 			groups as gr on uig.groupID = gr.id
     where u.telegramId = ${query.from.id} and gr.telegramId = ${query.chat.id}
     
-    `, function(err, result) {
+    `, function (err, result) {
         if (result[0]) {
             bot.sendMessage(query.chat.id, `Вы были ${result[0].countGoose} раз гусем.`);
         } else {
@@ -204,36 +198,33 @@ bot.onText(/\/me/, query => {
 });
 
 
+bot.onText(/\/start/, query => {
+    if (query.chat.type == "private") {
+        bot.sendMessage(
+            query.chat.id,
+            "Меня можно использовать только в группах.\nДля этого создайте группу и добавьте меня в нее."
+        );
+        return;
+    }
 
-
-
-    bot.onText(/\/start/, query => {
-        if (query.chat.type == "private") {
-            bot.sendMessage(
-                query.chat.id,
-                "Меня можно использовать только в группах.\nДля этого создайте группу и добавьте меня в нее."
-            );
-            return;
+    con.query(`SELECT * FROM groups WHERE telegramId = '${query.chat.id}'`, function (err, result) {
+        if (err) {
+            console.log(err);
         }
-
-        con.query(`SELECT * FROM groups WHERE telegramId = '${query.chat.id}'`, function(err, result) {
-            if (err) {
-                console.log(err);
-            }
-            if (result[0]) {
-                bot.sendMessage(query.chat.id, `Группа ${query.chat.title} была уже зарегистрирована`)
-            } else {
-                con.query(`INSERT INTO groups (telegramID, groupname) VALUES ('${query.chat.id}','${query.chat.title}')`, function(err, res) {
-                    if (err) {
-                        console.log(err);
-                    }
-                    bot.sendMessage(query.chat.id, `Группа зарегистрирована`);
-                })
-            }
-        })
+        if (result[0]) {
+            bot.sendMessage(query.chat.id, `Группа ${query.chat.title} была уже зарегистрирована`)
+        } else {
+            con.query(`INSERT INTO groups (telegramID, groupname) VALUES ('${query.chat.id}','${query.chat.title}')`, function (err, res) {
+                if (err) {
+                    console.log(err);
+                }
+                bot.sendMessage(query.chat.id, `Группа зарегистрирована`);
+            })
+        }
+    })
 
 
-    });
+});
 
 
 bot.onText(/\/stat/, query => {
@@ -259,7 +250,7 @@ bot.onText(/\/stat/, query => {
     
     where gr.telegramId = ${query.chat.id}
     order by countGoose desc
-            `, function(err, res) {
+            `, function (err, res) {
         if (res[0]) {
             let userString = '';
             for (let i = 0; i < res.length; i++) {
@@ -316,7 +307,7 @@ bot.onText(/\/top5/, query => {
         where gr.telegramId = ${query.chat.id}
         order by countGoose desc
         limit 5
-                `, function(err, res) {
+                `, function (err, res) {
         if (res[0]) {
             let userString = '';
             for (let i = 0; i < res.length; i++) {
