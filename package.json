@@ -5,11 +5,11 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "nodemon index.js",
+        "start": "node index.js",
         "switch_to_dev": "export $(cat .env | xargs) && wget --spider https://api.telegram.org/bot$TOKEN/setWebhook?url= --delete-after && node index.js"
     },
     "engines": {
-        "node": "6.11.4"
+        "node": "8.10.0"
     },
     "author": "",
     "license": "ISC",
