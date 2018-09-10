@@ -20,7 +20,9 @@ console.log("Bot has been started ...");
 const bot = new TelegramBot(TOKEN, {
     polling: true
 });
-
+setInterval(function() {
+    http.get("https://prod-telegram-bot.herokuapp.com");
+}, 300000);
 // const check_time = setInterval(function () {
 //     let date = new Date();
 
