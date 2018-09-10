@@ -1,6 +1,6 @@
 const TelegramBot = require("node-telegram-bot-api");
 const TOKEN = "479215318:AAENNSIFasERmQy5i4rve48latNkAPejOwo";
-const http = require('http');
+const https = require('https');
 const debug = require("./modules/helpers");
 const mongoose = require("mongoose");
 const hours = 13;
@@ -21,23 +21,8 @@ const bot = new TelegramBot(TOKEN, {
     polling: true
 });
 setInterval(function() {
-    http.get("https://prod-telegram-bot.herokuapp.com");
+    https.get("https://prod-telegram-bot.herokuapp.com");
 }, 300000);
-// const check_time = setInterval(function () {
-//     let date = new Date();
-
-//     if (date.getHours() == hours && date.getMinutes() == minutes) {
-//         bot.sendMessage(
-//             347135150,
-//             "Если вы не выберите Гуся дня, то это сделаю я!"
-//         );
-//         clearThisInterval();
-//     }
-// }, 3000);
-
-// clearThisInterval = () => {
-//     return clearInterval(check_time);
-// };
 
 bot.onText(/\/gusi/, query => {
     if (query.chat.id != "-302362122") {
