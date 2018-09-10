@@ -1,6 +1,7 @@
 const TelegramBot = require("node-telegram-bot-api");
 const TOKEN = "479215318:AAENNSIFasERmQy5i4rve48latNkAPejOwo";
 const https = require('https');
+const http = require('http');
 const debug = require("./modules/helpers");
 const mongoose = require("mongoose");
 const hours = 13;
@@ -22,7 +23,7 @@ const bot = new TelegramBot(TOKEN, {
 });
 setInterval(function() {
     https.get("https://prod-telegram-bot.herokuapp.com");
-}, 300000);
+}, 1200000);
 
 bot.onText(/\/gusi/, query => {
     if (query.chat.id != "-302362122") {
