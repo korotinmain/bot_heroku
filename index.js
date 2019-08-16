@@ -95,6 +95,43 @@ setInterval(() => {
         })
 }, 60 * 60 * 1000 * 8);
 
+bot.onText(/\/date_count/, query => {
+    
+    if (query.chat.id != "-302362122") {
+        bot.sendMessage(query.chat.id, 'В этом чате нельзя использовать этого бота');
+        return;
+    }
+    
+    if (query.chat.type == "private") {
+        bot.sendMessage(
+            query.chat.id,
+            "Меня можно использовать только в группах.\nДля этого создайте группу и добавьте меня в нее."
+        );
+        return;
+    }
+    const Person = mongoose.model("person");
+    const person = new Person({
+        Name: query.from.first_name,
+        Identificator: query.from.id
+    });
+
+    const current_date = new Date();
+    const modelDate = mongoose.model("get_date");
+    const date = new modelDate({
+        getDate: current_date.toLocaleDateString(),
+        year: current_date.getFullYear()
+    });
+
+    const get_model_date = modelDate
+        .find()
+        .then(dates => {
+            bot.sendMessage(query.chat.id, `Этот бот уже работает ${dates.length} дней`);
+        })
+        .catch(e => {
+          
+        });
+});
+
 bot.onText(/\/gusi/, query => {
     if (query.chat.id != "-302362122") {
         bot.sendMessage(query.chat.id, 'В этом чате нельзя использовать этого бота');
