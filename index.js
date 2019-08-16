@@ -67,10 +67,9 @@ setInterval(() => {
                             Math.random() * person_array.length
                         );
                         const current_goose = person_array[what_is_the_goose];
-                        const dayCount = getDayString(current_goose);
                         bot.sendMessage(
                             "-302362122",
-                            `Раз вы не хотите выбирать гуся - получайте, Гусь дня - ${dayCount}`
+                            `Раз вы не хотите выбирать гуся - получайте, Гусь дня - ${current_goose}`
                         );
                         let counter = 0;
                         const curr_goose = new modelDate({
@@ -136,7 +135,8 @@ bot.onText(/\/date_count/, query => {
     const get_model_date = modelDate
         .find()
         .then(dates => {
-            bot.sendMessage(query.chat.id, `Этот бот уже работает ${dates.length} дней(-я)`);
+            const dayCountString = getDayString(dates.length);
+            bot.sendMessage(query.chat.id, `Этот бот уже работает ${dates.length} ${dayCountString}`);
         })
         .catch(e => {
           
