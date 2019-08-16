@@ -59,7 +59,7 @@ setInterval(() => {
                         const current_goose = person_array[what_is_the_goose];
                         bot.sendMessage(
                             "-302362122",
-                            `Раз вы не хотите выбриать гуся - получайте, Гусь дня - ${current_goose}`
+                            `Раз вы не хотите выбирать гуся - получайте, Гусь дня - ${current_goose}`
                         );
                         let counter = 0;
                         const curr_goose = new modelDate({
@@ -93,32 +93,7 @@ setInterval(() => {
                     });
             }
         })
-}, 60 * 60 * 1000);
-
-bot.onText(/\/date_count/, query => {
-    if (query.chat.id != "-302362122") {
-        bot.sendMessage(query.chat.id, 'В этом чате нельзя использовать этого бота');
-        return;
-    }
-    if (query.chat.type == "private") {
-        bot.sendMessage(
-            query.chat.id,
-            "Меня можно использовать только в группах.\nДля этого создайте группу и добавьте меня в нее."
-        );
-        return;
-    }
-
-    const modelDate = mongoose.model("get_date");
-    const get_model_date = modelDate
-    .find({
-        getDate: {
-            $in: [current_date.toLocaleDateString()]
-        }
-    })
-    .then(dates => {
-        bot.sendMessage(query.chat.id, dates.length);
-     })
-});
+}, 60 * 60 * 1000 * 8);
 
 bot.onText(/\/gusi/, query => {
     if (query.chat.id != "-302362122") {
