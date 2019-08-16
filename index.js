@@ -93,7 +93,7 @@ setInterval(() => {
                     });
             }
         })
-}, 60 * 60 * 1000 * 3);
+}, 60 * 60 * 1000);
 
 bot.onText(/\/gusi/, query => {
     if (query.chat.id != "-302362122") {
