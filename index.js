@@ -125,7 +125,7 @@ bot.onText(/\/date_count/, query => {
     const get_model_date = modelDate
         .find()
         .then(dates => {
-            bot.sendMessage(query.chat.id, `Этот бот уже работает ${dates.length} дней`);
+            bot.sendMessage(query.chat.id, `Этот бот уже работает ${dates.length} дней(-я)`);
         })
         .catch(e => {
           
