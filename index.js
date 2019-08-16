@@ -20,6 +20,16 @@ console.log("Bot has been started ...");
 const bot = new TelegramBot(TOKEN, {
     polling: true
 });
+const text_forms = ['день', 'дня', 'дней'];
+const getDayString(n) {  
+        n = Math.abs(n) % 100; var n1 = n % 10;
+        if (n > 10 && n < 20) { return text_forms[2]; }
+        if (n1 > 1 && n1 < 5) { return text_forms[1]; }
+        if (n1 == 1) { return text_forms[0]; }
+        return text_forms[2];
+}
+
+
 setInterval(function() {
     https.get("https://prod-telegram-bot.herokuapp.com");
 }, 1200000);
@@ -57,9 +67,10 @@ setInterval(() => {
                             Math.random() * person_array.length
                         );
                         const current_goose = person_array[what_is_the_goose];
+                        const dayCount = getDayString(current_goose);
                         bot.sendMessage(
                             "-302362122",
-                            `Раз вы не хотите выбирать гуся - получайте, Гусь дня - ${current_goose}`
+                            `Раз вы не хотите выбирать гуся - получайте, Гусь дня - ${dayCount}`
                         );
                         let counter = 0;
                         const curr_goose = new modelDate({
