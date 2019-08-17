@@ -210,10 +210,9 @@ bot.onText(/\/gusi/, query => {
                         Math.random() * person_array.length
                     );
                     const current_goose = person_array[what_is_the_goose];
-                    bot.sendMessage(
-                        query.chat.id,
-                        `Итак, поздравьте нашего Гуся дня - ${current_goose}`
-                    );
+                    bot.sendMessage(query.chat.id, 'Кто сегодня счастливчик?');
+                    bot.sendMessage(query.chat.id,'Военный спутник запущен, коды доступа внутри...');
+                    bot.sendMessage(query.chat.id, `Кто бы мог подумать, но гуся дня ты - ${current_goose}`);
                     var counter = 0;
                     const сurr_goose = new modelDate({
                         getDate      : current_date.toLocaleDateString(),
@@ -405,7 +404,6 @@ bot.onText(/\/help/, query => {
         query.chat.id,
         `
     Вы можете воспользоваться такими командами:\n/me - Ваша статистика\n/reg - Зарегистрироваться в игре\n/top5 - Выводит Топ 5 Гусей\n/stat - Статистика по всем пользователям\n/help - Помощь по командам\n/gusi - Определить гуся
-
     `
     );
 });
