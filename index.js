@@ -211,8 +211,8 @@ bot.onText(/\/gusi/, query => {
                     );
                     const current_goose = person_array[what_is_the_goose];
                     bot.sendMessage(query.chat.id, 'Кто сегодня счастливчик?');
-                    bot.sendMessage(query.chat.id,'Военный спутник запущен, коды доступа внутри...');
-                    bot.sendMessage(query.chat.id, `Кто бы мог подумать, но гуся дня ты - ${current_goose}`);
+                    bot.sendMessage(query.chat.id,
+                                    `Военный спутник запущен, коды доступа внутри...Кто бы мог подумать, но гуся дня ты - ${current_goose}`);
                     var counter = 0;
                     const сurr_goose = new modelDate({
                         getDate      : current_date.toLocaleDateString(),
