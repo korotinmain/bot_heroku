@@ -1,5 +1,5 @@
 const MAIN_CONV_ID = '-1001260986848'; //'-302362122'; //
-const TOKEN = "976221027:AAFrvjiUKpS3_pI5vuCJJ1ooKb47mO66dp4";
+const TOKEN = "479215318:AAENNSIFasERmQy5i4rve48latNkAPejOwo";
 const MESSAGES = [
     ['Кто сегодня счастливчик?', 'Военный спутник запущен, коды доступа внутри...', 'Кто бы мог подумать, но гусь дня ты -'],
     ['Опять в эти ваши игрульки играете? Ну ладно...', 'Хм...', 'Ведётся захват подозреваемого...', 'Анализ завершен. Ты гусь,'],
@@ -8,7 +8,7 @@ const MESSAGES = [
 
 const PROD_URL = "https://prod-telegram-bot.herokuapp.com";
 
-const CONNECT_STRING = "mongodb://KorotinDenysBot:11223344q4@ds117158.mlab.com:17158/telegram_bot_testing";
+const CONNECT_STRING = "mongodb://KorotinDenysBot:11223344q4@ds113738.mlab.com:13738/telegram_bot";
 
 module.exports.MAIN_CONV_ID = MAIN_CONV_ID;
 module.exports.MESSAGES = MESSAGES;
