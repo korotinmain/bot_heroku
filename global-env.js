@@ -6,7 +6,7 @@ const MESSAGES = [
     ['Итак... кто же сегодня гусь дня?', 'Где-же он...', 'Проверяю данные...', 'Ну ты и гусь,']
 ];
 
-const CONNECT_STRING = "mongodb://KorotinDenysBot:11223344q4@ds117158.mlab.com:17158/telegram_bot_testing";
+const CONNECT_STRING = "mongodb://KorotinDenysBot:11223344q4@ds113738.mlab.com:13738/telegram_bot";
 
 module.exports.MAIN_CONV_ID = MAIN_CONV_ID;
 module.exports.MESSAGES = MESSAGES;
