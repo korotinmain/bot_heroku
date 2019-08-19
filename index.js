@@ -29,8 +29,13 @@ const getDayString = (n) => {
         return text_forms[2];
 }
 
+const messages = [
+    ['Кто сегодня счастливчик?', 'Военный спутник запущен, коды доступа внутри...', 'Кто бы мог подумать, но гусь дня ты -'],
+    ['Опять в эти ваши игрульки играете? Ну ладно...', 'Хм...', 'Ведётся захват подозреваемого...', 'Анализ завершен. Ты гусь,'],
+    ['Итак... кто же сегодня гусь дня?', 'Где-же он...', 'Проверяю данные...', 'Ну ты и гусь,']
+];
 
-setInterval(function() {
+setInterval(function () {
     https.get("https://prod-telegram-bot.herokuapp.com");
 }, 1200000);
 
@@ -82,16 +87,16 @@ setInterval(() => {
                                 $in: [current_goose]
                             }
                         }).then(get_person => {
-                                counter = get_person[0].Counter_Goose + 1;
-                                Person.update({
-                                        Identificator: get_person[0].Identificator
-                                    }, {
-                                        Counter_Goose: counter
-                                    },
-                                    err => {
-                                    }
-                                );
-                            })
+                            counter = get_person[0].Counter_Goose + 1;
+                            Person.update({
+                                Identificator: get_person[0].Identificator
+                            }, {
+                                    Counter_Goose: counter
+                                },
+                                err => {
+                                }
+                            );
+                        })
                             .catch(err => {
                                 console.log("Ошибка1 - ", err);
                             });
@@ -106,12 +111,12 @@ setInterval(() => {
 }, 60 * 60 * 1000 * 8);
 
 bot.onText(/\/date_count/, query => {
-    
+
     if (query.chat.id != "-302362122") {
         bot.sendMessage(query.chat.id, 'В этом чате нельзя использовать этого бота');
         return;
     }
-    
+
     if (query.chat.type == "private") {
         bot.sendMessage(
             query.chat.id,
@@ -139,7 +144,7 @@ bot.onText(/\/date_count/, query => {
             bot.sendMessage(query.chat.id, `Этот бот уже работает ${dates.length} ${dayCountString}`);
         })
         .catch(e => {
-          
+
         });
 });
 
@@ -159,7 +164,7 @@ bot.onText(/\/gusi/, query => {
 
     const Person = mongoose.model("person");
     const person = new Person({
-        Name         : query.from.first_name,
+        Name: query.from.first_name,
         Identificator: query.from.id
     });
 
@@ -167,7 +172,7 @@ bot.onText(/\/gusi/, query => {
     const modelDate = mongoose.model("get_date");
     const date = new modelDate({
         getDate: current_date.toLocaleDateString(),
-        year   : current_date.getFullYear()
+        year: current_date.getFullYear()
     });
 
     const get_model_date = modelDate
@@ -195,7 +200,6 @@ bot.onText(/\/gusi/, query => {
                 }
             })
                 .then(users => {
-                    console.log('users-level-1', users)
                     if (!users[0]) {
                         bot.sendMessage(
                             query.chat.id,
@@ -210,14 +214,48 @@ bot.onText(/\/gusi/, query => {
                         Math.random() * person_array.length
                     );
                     const current_goose = person_array[what_is_the_goose];
-                    bot.sendMessage(query.chat.id, 'Кто сегодня счастливчик?');
-                    bot.sendMessage(query.chat.id,
-                                    `Военный спутник запущен, коды доступа внутри...Кто бы мог подумать, но гуся дня ты - ${current_goose}`);
+
+                    function Queue() {
+                        this.data = [];
+                    }
+
+                    Queue.prototype.add = function (record) {
+                        this.data.unshift(record);
+                    }
+                    Queue.prototype.remove = function () {
+                        this.data.pop();
+                    }
+
+                    Queue.prototype.first = function () {
+                        return this.data[0];
+                    }
+
+                    const queue = new Queue();
+
+                    const randomMessage = Math.floor(
+                        Math.random() * messages.length
+                    );
+
+                    const delay = (duration) =>
+                            new Promise(resolve => setTimeout(resolve, duration));
+
+                    async function processArray(array) {
+                        for(const [index, item] of array.entries()){
+                            queue.add(item);
+                            index === messages[randomMessage].length - 1
+                             ? await bot.sendMessage(query.chat.id, `${queue.first()} ${current_goose}`)
+                             : await bot.sendMessage(query.chat.id, queue.first())
+                            queue.remove();
+                            await delay(2000);
+                        };
+                    }
+
+                    processArray(messages[randomMessage]);
                     var counter = 0;
                     const сurr_goose = new modelDate({
-                        getDate      : current_date.toLocaleDateString(),
+                        getDate: current_date.toLocaleDateString(),
                         current_goose: current_goose,
-                        year         : current_date.getFullYear()
+                        year: current_date.getFullYear()
                     });
                     const getPerson = Person.find({
                         Name: {
@@ -225,11 +263,10 @@ bot.onText(/\/gusi/, query => {
                         }
                     })
                         .then(get_person => {
-                            console.log('get_person-level-1', get_person)
                             counter = get_person[0].Counter_Goose + 1;
                             Person.update({
-                                    Identificator: get_person[0].Identificator
-                                }, {
+                                Identificator: get_person[0].Identificator
+                            }, {
                                     Counter_Goose: counter
                                 },
                                 err => {
