@@ -23,8 +23,6 @@ mongoose
 require("./models/person.model");
 require("./models/date.model");
 
-console.log("Bot has been started ...");
-
 const bot = new TelegramBot(TOKEN, {
     polling: true
 });

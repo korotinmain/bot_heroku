@@ -8,7 +8,7 @@ const MESSAGES = [
 
 const PROD_URL = "https://prod-telegram-bot.herokuapp.com";
 
-const CONNECT_STRING = "mongodb://KorotinDenysBot:11223344q4@ds113738.mlab.com:13738/telegram_bot";
+const CONNECT_STRING = "mongodb+srv://korotinbot:11223344q4@cluster0.jhmxc.mongodb.net/telegram_bot?retryWrites=true&w=majority";
 
 module.exports.MAIN_CONV_ID = MAIN_CONV_ID;
 module.exports.MESSAGES = MESSAGES;

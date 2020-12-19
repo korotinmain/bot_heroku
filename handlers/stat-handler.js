@@ -3,17 +3,17 @@ const main_conv_id = require('../global-env').MAIN_CONV_ID;
 const mongoose = require("mongoose");
 
 const statHandler = (bot, query) => {
-    if (query.chat.id != main_conv_id) {
-        bot.sendMessage(query.chat.id, 'В этом чате нельзя использовать этого бота');
-        return;
-    }
-    if (query.chat.type == "private") {
-        bot.sendMessage(
-            query.chat.id,
-            "Меня можно использовать только в группах.\nДля этого создайте группу и добавьте меня в нее."
-        );
-        return;
-    }
+    // if (query.chat.id != main_conv_id) {
+    //     bot.sendMessage(query.chat.id, 'В этом чате нельзя использовать этого бота');
+    //     return;
+    // }
+    // if (query.chat.type == "private") {
+    //     bot.sendMessage(
+    //         query.chat.id,
+    //         "Меня можно использовать только в группах.\nДля этого создайте группу и добавьте меня в нее."
+    //     );
+    //     return;
+    // }
 
     const Person = mongoose.model("person");
     Person.find({
@@ -28,6 +28,7 @@ const statHandler = (bot, query) => {
             Name: "asc"
         })
         .then(users => {
+            console.log(users);
             if (!users[0]) {
                 bot.sendMessage(
                     query.chat.id,
@@ -45,6 +46,7 @@ const statHandler = (bot, query) => {
             }
         })
         .catch(ex => {
+            console.log(ex);
             bot.sendMessage(
                 query.chat.id,
                 "Нету еще зарегистрированных пользователей"
